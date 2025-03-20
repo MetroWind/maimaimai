@@ -1,0 +1,24 @@
+= MaiMaiMai
+
+== Introduction
+
+Sometimes I do a lot of research before buying a thing. For example,
+when I’m building a new PC, I would carefully pick the parts. A PC has
+a certain number of components, such as the CPU, RAM,
+motherboard, etc. Usually there are multiple vendors building their
+component to similar specs. For example, both Asus and AsRock build
+X870 motherboards in the ATA form factor. In fact they both build
+multiple SKUs with slightly different specs. All these motherboards
+are alternatives I could choose from, and they all have their pros and
+cons. I would read/watch reviews from multiple sources and lay them
+all out before making a decision.
+
+MaiMaiMai is a simple way to arrange and present all those components
+and alternatives.
+
+== Usage
+
+1. Click “Edit” at the top right corner.
+2. Edit.
+3. Click “Done!”
+4. Copy and share URL.
