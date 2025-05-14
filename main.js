@@ -5,10 +5,11 @@ function Window({title, children})
              e("div", {}, children));
 }
 
-function AppView({init_plan})
+function AppView({init_plan, init_code})
 {
     const [app_state, setAppState] = React.useState("view");
     const [plan, setPlan] = React.useState(init_plan);
+    const [code, setCode] = React.useState(init_code);
 
     function onPlanChange(new_plan)
     {
@@ -27,13 +28,14 @@ function AppView({init_plan})
             const url = new URL(location);
             url.searchParams.set("plan", s);
             window.history.pushState({}, "", url);
+            setCode(s);
         });
     }
 
     if(app_state == "view")
     {
         return e("div", {className: "Viewer"},
-                 e(PlanView, {plan: plan,
+                 e(PlanView, {plan: plan, code: code,
                               on_state_change: onStateChange}));
     }
     else if(app_state == "edit")
@@ -45,10 +47,10 @@ function AppView({init_plan})
     }
 }
 
-function render(plan)
+function render(plan, code)
 {
     ReactDOM.createRoot(document.getElementById('AppWrapper')).render(
-        e(AppView, {init_plan: plan}));
+        e(AppView, {init_plan: plan, init_code: code}));
 }
 
 const paramsString = window.location.search;
@@ -60,5 +62,5 @@ if(encoded_plan === null)
 }
 else
 {
-    decompressObj(encoded_plan).then(p => render(p));
+    decompressObj(encoded_plan).then(p => render(p, encoded_plan));
 }

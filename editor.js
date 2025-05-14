@@ -27,7 +27,7 @@ function RemovableText({text, on_change, on_remove})
              e(Button, {label: "X", on_click: on_remove, type: "float"}));
 }
 
-function EditAlternativeView({alternative, on_change})
+function EditAlternativeView({alternative, on_change, on_remove})
 {
     const [current_alt, setAlternative] = React.useState(alternative);
 
@@ -121,11 +121,11 @@ function EditAlternativeView({alternative, on_change})
     }
 
     let pro_views = current_alt.pros.map((pro, i) =>
-        e(RemovableText, {text: pro, key: i,
+        e(RemovableText, {text: pro, key: pro,
                           on_change: new_pro => onProChange(i, new_pro),
                           on_remove: () => onRemovePro(i)}));
     let con_views = current_alt.cons.map((con, i) =>
-        e(RemovableText, {text: con, key: i,
+        e(RemovableText, {text: con, key: con,
                           on_change: new_con => onConChange(i, new_con),
                           on_remove: () => onRemoveCon(i)}));
 
@@ -154,7 +154,9 @@ function EditAlternativeView({alternative, on_change})
              e("div", {}, "Cons:"),
              e("div", {}, con_views),
              e("div", {className: "Row"},
-               e(Button, {label: "Add Con", on_click: onAddCon})));
+               e(Button, {label: "Add Con", on_click: onAddCon})),
+             e("div", {className: "Row"},
+               e(Button, {label: "Remove Alternative", on_click: on_remove})));
 }
 
 function EditComponentView({component, on_change})
@@ -193,9 +195,18 @@ function EditComponentView({component, on_change})
         on_change(new_comp);
     }
 
+    function onAlternativeRemove(i)
+    {
+        let new_comp = structuredClone(current_comp);
+        new_comp.alternatives.splice(i, 1);
+        setComponent(new_comp);
+        on_change(new_comp);
+    }
+
     let alt_views = current_comp.alternatives.map((alt, i) =>
-        e(EditAlternativeView, {alternative: alt, key: i, on_change:
-                                new_alt => onAlternativeChange(i, new_alt)}));
+        e(EditAlternativeView, {alternative: alt, key: alt.title, on_change:
+                                new_alt => onAlternativeChange(i, new_alt),
+                                on_remove: () => onAlternativeRemove(i)}));
 
     return e("div", {className: "LabeledFrame"},
              e("h3", {}, "Component: " + current_comp.title),

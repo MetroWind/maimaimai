@@ -44,7 +44,26 @@ function ComponentView({component})
                  alt_views)));
 }
 
-function PlanView({plan, on_state_change})
+function CodeView({code})
+{
+    function copyCode()
+    {
+        navigator.clipboard.writeText(code);
+    }
+
+    function copyURL()
+    {
+        navigator.clipboard.writeText(window.location.href);
+    }
+
+    return e("div", {id: "CodeView"},
+             e("textarea", {readOnly: true, value: code}),
+             e("div", {className: "Row"},
+               e(Button, {label: "Copy Code", on_click: copyCode}),
+               e(Button, {label: "Copy URL", on_click: copyURL})));
+}
+
+function PlanView({plan, code, on_state_change})
 {
     let comp_views = plan.components.map((comp, i) =>
         e(ComponentView, {component: comp, key: i}));
@@ -55,5 +74,6 @@ function PlanView({plan, on_state_change})
                e("div", {}, e(Button, {label: "Edit", on_click: () =>
                    on_state_change("edit")}))),
              e(MarkdownDiv, {source: plan.desc, className: "Description"}),
-             comp_views);
+             comp_views,
+             e(CodeView, {code: code}));
 }

@@ -442,6 +442,28 @@ code, pre
         margin-left: 0.5ex;
     }
 
+    #CodeView
+    {
+        margin-top: 32px;
+
+        textarea
+        {
+            display: block;
+            resize: none;
+            overflow: auto;
+            width: 100%;
+        }
+    }
+
+    .Row
+    {
+        margin: 10px 0px;
+
+        .Button
+        {
+            margin: 0px 10px;
+        }
+    }
 }
 
 footer
