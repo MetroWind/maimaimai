@@ -121,11 +121,11 @@ function EditAlternativeView({alternative, on_change, on_remove})
     }
 
     let pro_views = current_alt.pros.map((pro, i) =>
-        e(RemovableText, {text: pro, key: pro,
+        e(RemovableText, {text: pro, key: i,
                           on_change: new_pro => onProChange(i, new_pro),
                           on_remove: () => onRemovePro(i)}));
     let con_views = current_alt.cons.map((con, i) =>
-        e(RemovableText, {text: con, key: con,
+        e(RemovableText, {text: con, key: i,
                           on_change: new_con => onConChange(i, new_con),
                           on_remove: () => onRemoveCon(i)}));
 
@@ -182,7 +182,9 @@ function EditComponentView({component, on_change})
     function onAddAlternative(event)
     {
         let new_comp = structuredClone(current_comp);
-        new_comp.alternatives.push(NULL_ALTERNATIVE);
+        let new_alt = structuredClone(NULL_ALTERNATIVE);
+        new_alt.key = self.crypto.randomUUID();
+        new_comp.alternatives.push(new_alt);
         setComponent(new_comp);
         on_change(new_comp);
     }
@@ -203,10 +205,16 @@ function EditComponentView({component, on_change})
         on_change(new_comp);
     }
 
-    let alt_views = current_comp.alternatives.map((alt, i) =>
-        e(EditAlternativeView, {alternative: alt, key: alt.title, on_change:
-                                new_alt => onAlternativeChange(i, new_alt),
-                                on_remove: () => onAlternativeRemove(i)}));
+    let alt_views = current_comp.alternatives.map((alt, i) => {
+        if (alt.key === undefined)
+        {
+            alt.key = self.crypto.randomUUID();
+        }
+        return e(EditAlternativeView,
+                 {alternative: alt, key: alt.key, on_change:
+                  new_alt => onAlternativeChange(i, new_alt),
+                  on_remove: () => onAlternativeRemove(i)});
+    });
 
     return e("div", {className: "LabeledFrame"},
              e("h3", {}, "Component: " + current_comp.title),
